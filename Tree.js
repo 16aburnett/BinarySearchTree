@@ -81,8 +81,8 @@ Tree.prototype.inorder = function(node){
 
     if (node == null)
     return "";
-
-    return this.inorder(node.left) + "" + node.data + this.inorder(node.right);
+    else 
+    return this.inorder(node.left) + ("" + node.data) + this.inorder(node.right);
 
 }
 
@@ -135,22 +135,24 @@ Tree.prototype.removeR = function(node, data){
         // Case 3 : root has two children trees 
         else {
 
+
             // Case 1 : if left is the preceeding 
             if (node.left.right == null) {
 
                 // swap data 
                 node.data = node.left.data;
 
-                // remove leaf 
-                node.left = null;
+                // remove node
+                // covers cases if node has left or not 
+                node.left = node.left.left;     
+                
 
             }
 
             // Case 2 : if left is not the preceeding 
             else {
                 // use remove largest to get the preceeding node
-                preceeding_nodes_data = this.removeLargest(node.left, node.left.right);
-                node.data = preceeding_nodes_data;
+                node.data = this.removeLargest(node.left, node.left.right);
             }
 
         }
@@ -163,9 +165,10 @@ Tree.prototype.removeR = function(node, data){
 
 Tree.prototype.removeLargest = function(parent, node){
 
+
     // Case 1 : node is the largest
     if (node.right == null) {
-        parent.right = null;
+        parent.right = node.left; // covers case of largest having a left
         return node.data;
     }
 
